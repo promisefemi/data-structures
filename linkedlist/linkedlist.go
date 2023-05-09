@@ -66,6 +66,31 @@ func (node *linkedList) deleteLastNode() {
 		p.next = nil*/
 }
 
+func (node *linkedList) insertNodeAtSpecificPosition(value string, position int) {
+	currentNode := node
+	fmt.Println(value, position)
+	newNode := &linkedList{value: value}
+	for i := 0; i < position; i++ {
+		currentNode = currentNode.next
+	}
+	newNode.next = currentNode.next
+	currentNode.next = newNode
+}
+func (node *linkedList) insertAtBeginning(value string) *linkedList {
+	newNode := &linkedList{value: value}
+	tempNode := node
+	newNode.next = tempNode
+	return newNode
+}
+
+func (node *linkedList) deleteSpecificNode(index int) {
+	currentNode := node
+	for i := 0; i < index; i++ {
+		currentNode = currentNode.next
+	}
+	currentNode.next = currentNode.next.next
+}
+
 func main() {
 	list := new(linkedList)
 
@@ -75,6 +100,10 @@ func main() {
 		fmt.Println("(2) print list")
 		fmt.Println("(3) delete from head/beginning")
 		fmt.Println("(4) delete from last")
+		fmt.Println("(5) delete from position")
+		fmt.Println("(6) insert into position")
+		fmt.Println("(7) insert at head")
+		fmt.Println("(8) exit")
 		_, err := fmt.Scanln(&selected)
 		if err != nil {
 			log.Fatalln(err)
@@ -95,6 +124,38 @@ func main() {
 			list = list.deleteFirstNode()
 		case "4":
 			list.deleteLastNode()
+		case "5":
+			fmt.Println("Delete from a position")
+			var i int
+			_, err = fmt.Scanln(&i)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			list.deleteSpecificNode(i)
+
+		case "6":
+			fmt.Println("Enter new value")
+			var item string
+			_, err := fmt.Scanln(&item)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			fmt.Println("Enter new item position")
+			var i int
+			_, err = fmt.Scanln(&i)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			list.insertNodeAtSpecificPosition(item, i)
+		case "7":
+			fmt.Println("Enter new value")
+			var item string
+			_, err := fmt.Scanln(&item)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			list = list.insertAtBeginning(item)
 		default:
 			os.Exit(0)
 
